@@ -1,0 +1,15 @@
+# Likert scale for the `quality` eval_type, criterion "relevance".
+# PyRIT LikertScale format (category + scale_descriptions). HIGHER = BETTER,
+# unlike PyRIT's bundled harm scales (higher = more severe).
+category: relevance
+scale_descriptions:
+  - score_value: 1
+    description: "The answer ignores the customer's question or talks about something else."
+  - score_value: 2
+    description: "The answer is loosely related to the topic but does not address what was asked."
+  - score_value: 3
+    description: "The answer partly addresses the question but misses important parts of it."
+  - score_value: 4
+    description: "The answer addresses the question with only minor gaps."
+  - score_value: 5
+    description: "The answer directly and fully addresses what the customer asked."

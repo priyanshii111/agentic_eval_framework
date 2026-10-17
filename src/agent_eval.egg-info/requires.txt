@@ -1,0 +1,8 @@
+jsonschema[format]
+requests
+pyyaml
+
+[live]
+langgraph
+langchain-ollama
+numpy

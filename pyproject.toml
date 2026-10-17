@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-eval"
+version = "0.1.0"
+description = "Agent evaluation framework"
+requires-python = ">=3.10"
+dependencies = [
+    "jsonschema[format]",
+    "requests",
+    "pyyaml",
+]
+
+[project.optional-dependencies]
+# Only needed for --mode live: running the real airline agent on local Ollama.
+# Static mode (fibernet/bankbot fixtures) needs none of these.
+live = [
+    "langgraph",
+    "langchain-ollama",
+    "numpy",
+]
+# PyRIT (Microsoft's red-teaming toolkit): Likert judge for live statistical
+# checks + attack delivery for live adversarial checks. Heavy (~44 libraries),
+# so kept separate. Pinned exactly: its API changes a lot between versions.
+pyrit = [
+    "pyrit==1.1.0",
+]
+
+[tool.setuptools.packages.find]
+# src/ holds the framework (agent_eval); the repo root holds the agents under
+# test (agents/), which live outside the framework on purpose.
+where = ["src", "."]
+include = ["agent_eval*", "agents*"]
