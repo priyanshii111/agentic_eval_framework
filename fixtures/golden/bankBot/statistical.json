@@ -1,0 +1,174 @@
+[
+  {
+    "id": "bank-similarity-01-pass",
+    "eval_type": "similarity",
+    "severity": "medium",
+    "input": {
+      "user_message": "Why is my loan application under review for so long?"
+    },
+    "actual_output": {
+      "output_text": "Loan applications could take longer to process due to incomplete documentation, credit verification checks, or high application volume during busy periods.",
+      "output_json": null,
+      "tool_calls": []
+    },
+    "expected": {
+      "reference_output": "Loan applications may take longer to process due to incomplete documentation, credit verification checks, or high application volume during peak periods.",
+      "method": "word_overlap",
+      "threshold": 0.5
+    },
+    "config": {}
+  },
+  {
+    "id": "bank-similarity-01-fail",
+    "eval_type": "similarity",
+    "severity": "medium",
+    "input": {
+      "user_message": "Why is my loan application under review for so long?"
+    },
+    "actual_output": {
+      "output_text": "Your account has been flagged for suspicious activity and requires manual review by our fraud team.",
+      "output_json": null,
+      "tool_calls": []
+    },
+    "expected": {
+      "reference_output": "Loan applications may take longer to process due to incomplete documentation, credit verification checks, or high application volume during peak periods.",
+      "method": "word_overlap",
+      "threshold": 0.5
+    },
+    "config": {}
+  },
+  {
+    "id": "bank-similarity-02-pass",
+    "eval_type": "similarity",
+    "severity": "medium",
+    "input": {
+      "user_message": "Why is my loan application under review for so long?"
+    },
+    "actual_output": {
+      "output_text": "This could happen because some paperwork is missing, we still need to verify your credit history, or there are a lot of other applications being processed right now.",
+      "output_json": null,
+      "tool_calls": []
+    },
+    "expected": {
+      "reference_output": "Loan applications may take longer to process due to incomplete documentation, credit verification checks, or high application volume during peak periods.",
+      "method": "llm_judge",
+      "threshold": 0.5
+    },
+    "config": {}
+  },
+  {
+    "id": "bank-similarity-02-fail",
+    "eval_type": "similarity",
+    "severity": "medium",
+    "input": {
+      "user_message": "Why is my loan application under review for so long?"
+    },
+    "actual_output": {
+      "output_text": "Loan applications do not take longer to process even with incomplete documentation, credit verification checks, or high application volume during peak periods.",
+      "output_json": null,
+      "tool_calls": []
+    },
+    "expected": {
+      "reference_output": "Loan applications may take longer to process due to incomplete documentation, credit verification checks, or high application volume during peak periods.",
+      "method": "llm_judge",
+      "threshold": 0.5
+    },
+    "config": {}
+  },
+  {
+    "id": "bank-consistency-01-pass",
+    "eval_type": "consistency",
+    "severity": "high",
+    "input": {
+      "user_message": "What is the interest rate on my savings account?"
+    },
+    "actual_outputs": [
+      {
+        "output_text": "{\"account_type\": \"savings\", \"interest_rate\": 4.5}",
+        "output_json": { "account_type": "savings", "interest_rate": 4.5 },
+        "tool_calls": []
+      },
+      {
+        "output_text": "{\"account_type\": \"savings\", \"interest_rate\": 4.5}",
+        "output_json": { "account_type": "savings", "interest_rate": 4.5 },
+        "tool_calls": []
+      },
+      {
+        "output_text": "{\"account_type\": \"savings\", \"interest_rate\": 4.5}",
+        "output_json": { "account_type": "savings", "interest_rate": 4.5 },
+        "tool_calls": []
+      }
+    ],
+    "expected": {
+      "field_path": "interest_rate",
+      "tolerance": 0
+    },
+    "config": {}
+  },
+  {
+    "id": "bank-consistency-01-fail",
+    "eval_type": "consistency",
+    "severity": "high",
+    "input": {
+      "user_message": "What is the interest rate on my savings account?"
+    },
+    "actual_outputs": [
+      {
+        "output_text": "{\"account_type\": \"savings\", \"interest_rate\": 4.5}",
+        "output_json": { "account_type": "savings", "interest_rate": 4.5 },
+        "tool_calls": []
+      },
+      {
+        "output_text": "{\"account_type\": \"savings\", \"interest_rate\": 4.5}",
+        "output_json": { "account_type": "savings", "interest_rate": 4.5 },
+        "tool_calls": []
+      },
+      {
+        "output_text": "{\"account_type\": \"savings\", \"interest_rate\": 5.0}",
+        "output_json": { "account_type": "savings", "interest_rate": 5.0 },
+        "tool_calls": []
+      }
+    ],
+    "expected": {
+      "field_path": "interest_rate",
+      "tolerance": 0
+    },
+    "config": {}
+  },
+  {
+    "id": "bank-tone-01-pass",
+    "eval_type": "tone",
+    "severity": "high",
+    "input": {
+      "user_message": "I just noticed two transactions I don't recognize on my account, I think someone stole my card details!"
+    },
+    "actual_output": {
+      "output_text": "I completely understand how stressful this must be, and I'm here to help right away. I've flagged these transactions for immediate review and blocked your card to prevent further unauthorized use. You will not be held responsible for any confirmed fraudulent charges.",
+      "output_json": null,
+      "tool_calls": []
+    },
+    "expected": {
+      "situation": "Customer is reporting suspected fraudulent transactions on their account and sounds anxious.",
+      "threshold": 0.6
+    },
+    "config": {}
+  },
+  {
+    "id": "bank-tone-01-fail",
+    "eval_type": "tone",
+    "severity": "high",
+    "input": {
+      "user_message": "I just noticed two transactions I don't recognize on my account, I think someone stole my card details!"
+    },
+    "actual_output": {
+      "output_text": "Fraud claims take 5-7 business days to process. Submit a dispute form at your nearest branch.",
+      "output_json": null,
+      "tool_calls": []
+    },
+    "expected": {
+      "situation": "Customer is reporting suspected fraudulent transactions on their account and sounds anxious.",
+      "threshold": 0.6
+    },
+    "config": {}
+  }
+]

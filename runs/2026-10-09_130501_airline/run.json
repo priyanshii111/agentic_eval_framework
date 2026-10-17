@@ -1,0 +1,30 @@
+{
+  "domain": "airline",
+  "started_at": "2026-10-09T13:05:01",
+  "agent_config": {
+    "agent": {
+      "adapter": "airline_support",
+      "model": "qwen2.5:7b",
+      "ollama_host": "http://localhost:11434",
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 8192,
+      "frozen_now": "2024-04-30T12:05:03.561731-04:00",
+      "default_passenger_id": "3442 587242",
+      "recursion_limit": 25
+    },
+    "data": {
+      "db_backup": "data/airline/travel2.backup.sqlite",
+      "policy_faq": "data/airline/swiss_faq.md"
+    },
+    "policy_lookup": {
+      "embedding_model": "qwen3-embedding:0.6b",
+      "top_k": 2
+    }
+  },
+  "layer_configs": {
+    "adversarial": {
+      "case_sensitive": false
+    }
+  }
+}

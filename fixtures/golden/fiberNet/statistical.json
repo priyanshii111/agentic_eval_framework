@@ -1,0 +1,78 @@
+[
+  {
+    "id": "fiber-similarity-01-pass",
+    "eval_type": "similarity",
+    "severity": "medium",
+    "input": {
+      "user_message": "Why is my internet connection slow today?"
+    },
+    "actual_output": {
+      "output_text": "Your internet could be slow because too many devices are connected to the network at once, or due to high traffic during peak hours.",
+      "output_json": null,
+      "tool_calls": []
+    },
+    "expected": {
+      "reference_output": "Your internet may be slow due to too many devices connected to the network at the same time, or due to high traffic during peak hours.",
+      "method": "word_overlap",
+      "threshold": 0.5
+    },
+    "config": {}
+  },
+  {
+    "id": "fiber-similarity-02-fail",
+    "eval_type": "similarity",
+    "severity": "medium",
+    "input": {
+      "user_message": "Why is my internet connection slow today?"
+    },
+    "actual_output": {
+      "output_text": "Your bill increased this month because you upgraded to a higher data plan.",
+      "output_json": null,
+      "tool_calls": []
+    },
+    "expected": {
+      "reference_output": "Your internet may be slow due to too many devices connected to the network at the same time, or due to high traffic during peak hours.",
+      "method": "word_overlap",
+      "threshold": 0.5
+    },
+    "config": {}
+  },
+  {
+    "id": "fiber-similarity-03-pass",
+    "eval_type": "similarity",
+    "severity": "medium",
+    "input": {
+      "user_message": "Why is my internet connection slow today?"
+    },
+    "actual_output": {
+      "output_text": "This could happen if a lot of gadgets are online at the same time, or the network is just really busy right now.",
+      "output_json": null,
+      "tool_calls": []
+    },
+    "expected": {
+      "reference_output": "Your internet may be slow due to too many devices connected to the network at the same time, or due to high traffic during peak hours.",
+      "method": "llm_judge",
+      "threshold": 0.5
+    },
+    "config": {}
+  },
+  {
+    "id": "fiber-similarity-04-fail",
+    "eval_type": "similarity",
+    "severity": "medium",
+    "input": {
+      "user_message": "Why is my internet connection slow today?"
+    },
+    "actual_output": {
+      "output_text": "Your internet is not slow even with many devices connected to the network at the same time, and there is no heavy traffic during peak hours.",
+      "output_json": null,
+      "tool_calls": []
+    },
+    "expected": {
+      "reference_output": "Your internet may be slow due to too many devices connected to the network at the same time, or due to high traffic during peak hours.",
+      "method": "llm_judge",
+      "threshold": 0.5
+    },
+    "config": {}
+  }
+]

@@ -1,0 +1,18 @@
+# Grading defaults for the airline statistical layer (live mode).
+# Flat keys: the runner merges this file into every case's "config".
+# fibernet/bankbot keep phi3 in their own files; this file never affects them.
+
+default_method: llm_judge
+default_threshold: 0.5
+default_tone_threshold: 0.6
+default_quality_threshold: 0.5   # quality: Likert 1-5 normalized to 0-1, so 0.5 = "3/5 or better" passes
+
+llm_judge_model: "qwen2.5:3b"     # judge is a different size from the agent (qwen2.5:7b) to reduce self-grading bias
+ollama_host: "http://localhost:11434"
+llm_judge_timeout_seconds: 120    # CPU-only: judging is slow
+llm_judge_max_retries: 2
+
+# Judge repeatability (Principle 1): same answer -> same score as far as possible.
+# A judge can never be fully guaranteed, so a score stays a probability (Principle 7).
+judge_temperature: 0
+judge_seed: 42

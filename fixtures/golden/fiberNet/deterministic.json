@@ -1,0 +1,185 @@
+[
+  {
+    "id": "fiber-tool-01",
+    "eval_type": "tool_call",
+    "severity": "critical",
+    "input": {
+      "user_message": "How much data have I used this month on my Home Fiber 200 plan, and is my connection working fine?"
+    },
+    "actual_output": {
+      "output_text": "{\"account_id\": \"FN-88213\", \"plan\": {\"name\": \"Home Fiber 200\", \"speed_mbps\": 200}, \"usage\": {\"data_used_gb\": 734.5, \"data_limit_gb\": 1000}, \"connection_status\": \"ONLINE\"}",
+      "output_json": {
+        "account_id": "FN-88213",
+        "plan": { "name": "Home Fiber 200", "speed_mbps": 200 },
+        "usage": { "data_used_gb": 734.5, "data_limit_gb": 1000 },
+        "connection_status": "ONLINE"
+      },
+      "tool_calls": [
+        { "tool": "get_account_usage", "args": { "account_id": "FN-88213" } }
+      ]
+    },
+    "expected": {
+      "expected_tool_calls": [
+        { "tool": "get_account_usage", "args": { "account_id": "FN-88213" } }
+      ],
+      "enforce_order": false
+    },
+    "config": {}
+  },
+  {
+    "id": "fiber-exact-01",
+    "eval_type": "exact_match",
+    "severity": "high",
+    "input": {
+      "user_message": "How much data have I used this month on my Home Fiber 200 plan, and is my connection working fine?"
+    },
+    "actual_output": {
+      "output_text": "{\"account_id\": \"FN-88213\", \"plan\": {\"name\": \"Home Fiber 200\", \"speed_mbps\": 200}, \"usage\": {\"data_used_gb\": 734.5, \"data_limit_gb\": 1000}, \"connection_status\": \"ONLINE\"}",
+      "output_json": {
+        "account_id": "FN-88213",
+        "plan": { "name": "Home Fiber 200", "speed_mbps": 200 },
+        "usage": { "data_used_gb": 734.5, "data_limit_gb": 1000 },
+        "connection_status": "ONLINE"
+      },
+      "tool_calls": [
+        { "tool": "get_account_usage", "args": { "account_id": "FN-88213" } }
+      ]
+    },
+    "expected": {
+      "field_path": "connection_status",
+      "expected_output": "ONLINE"
+    },
+    "config": {
+      "case_sensitive": true,
+      "trim_whitespace": true
+    }
+  },
+  {
+    "id": "fiber-constraints-01",
+    "eval_type": "constraints",
+    "severity": "critical",
+    "input": {
+      "user_message": "How much data have I used this month on my Home Fiber 200 plan, and is my connection working fine?"
+    },
+    "actual_output": {
+      "output_text": "{\"account_id\": \"FN-88213\", \"plan\": {\"name\": \"Home Fiber 200\", \"speed_mbps\": 200}, \"usage\": {\"data_used_gb\": 734.5, \"data_limit_gb\": 1000}, \"connection_status\": \"ONLINE\"}",
+      "output_json": {
+        "account_id": "FN-88213",
+        "plan": { "name": "Home Fiber 200", "speed_mbps": 200 },
+        "usage": { "data_used_gb": 734.5, "data_limit_gb": 1000 },
+        "connection_status": "ONLINE"
+      },
+      "tool_calls": [
+        { "tool": "get_account_usage", "args": { "account_id": "FN-88213" } }
+      ]
+    },
+    "expected": {
+      "constraints": {
+        "all": [
+          { "type": "range", "field": "usage.data_used_gb", "min": 0, "max": 1000 },
+          { "type": "contains", "field": "output_text", "value": "FN-88213" }
+        ]
+      }
+    },
+    "config": {
+      "float_tolerance": 0.01
+    }
+  },
+  {
+    "id": "fiber-schema-01-pass",
+    "eval_type": "json_schema",
+    "severity": "critical",
+    "input": {
+      "user_message": "How much data have I used this month on my Home Fiber 200 plan, and is my connection working fine?"
+    },
+    "actual_output": {
+      "output_text": "{\"account_id\": \"FN-88213\", \"plan\": {\"name\": \"Home Fiber 200\", \"speed_mbps\": 200}, \"usage\": {\"data_used_gb\": 734.5, \"data_limit_gb\": 1000}, \"connection_status\": \"ONLINE\"}",
+      "output_json": {
+        "account_id": "FN-88213",
+        "plan": { "name": "Home Fiber 200", "speed_mbps": 200 },
+        "usage": { "data_used_gb": 734.5, "data_limit_gb": 1000 },
+        "connection_status": "ONLINE"
+      },
+      "tool_calls": [
+        { "tool": "get_account_usage", "args": { "account_id": "FN-88213" } }
+      ]
+    },
+    "expected": {
+      "expected_schema": {
+        "type": "object",
+        "required": ["account_id", "plan", "usage", "connection_status"],
+        "properties": {
+          "account_id": { "type": "string" },
+          "plan": {
+            "type": "object",
+            "required": ["name", "speed_mbps"],
+            "properties": {
+              "name": { "type": "string" },
+              "speed_mbps": { "type": "number" }
+            }
+          },
+          "usage": {
+            "type": "object",
+            "required": ["data_used_gb", "data_limit_gb"],
+            "properties": {
+              "data_used_gb": { "type": "number" },
+              "data_limit_gb": { "type": "number" }
+            }
+          },
+          "connection_status": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "config": {
+      "strict_extra_fields": true,
+      "coerce_numeric_strings": false
+    }
+  },
+  {
+    "id": "fiber-schema-01-fail",
+    "eval_type": "json_schema",
+    "severity": "critical",
+    "input": {
+      "user_message": "How much data have I used this month on my Home Fiber 200 plan, and is my connection working fine?"
+    },
+    "actual_output": {
+      "output_text": "Sure! Here's your usage summary: {\"account_id\": \"FN-88213\", \"plan\": {\"name\": \"Home Fiber 200\", \"speed_mbps\": 200}, \"usage\": {\"data_used_gb\": 734.5, \"data_limit_gb\": 1000}, \"connection_status\": \"ONLINE\"}",
+      "output_json": null,
+      "tool_calls": [
+        { "tool": "get_account_usage", "args": { "account_id": "FN-88213" } }
+      ]
+    },
+    "expected": {
+      "expected_schema": {
+        "type": "object",
+        "required": ["account_id", "plan", "usage", "connection_status"],
+        "properties": {
+          "account_id": { "type": "string" },
+          "plan": {
+            "type": "object",
+            "required": ["name", "speed_mbps"],
+            "properties": {
+              "name": { "type": "string" },
+              "speed_mbps": { "type": "number" }
+            }
+          },
+          "usage": {
+            "type": "object",
+            "required": ["data_used_gb", "data_limit_gb"],
+            "properties": {
+              "data_used_gb": { "type": "number" },
+              "data_limit_gb": { "type": "number" }
+            }
+          },
+          "connection_status": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "config": {
+      "strict_extra_fields": true,
+      "coerce_numeric_strings": false
+    }
+  }
+]

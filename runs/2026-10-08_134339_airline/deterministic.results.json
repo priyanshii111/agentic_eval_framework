@@ -1,0 +1,67 @@
+[
+  {
+    "case_id": "airline-det-01",
+    "eval_type": "tool_call",
+    "status": "fail",
+    "severity": "critical",
+    "reason": "missing calls to ['fetch_user_flight_information']",
+    "details": {
+      "missing_tools": [
+        "fetch_user_flight_information"
+      ],
+      "unexpected_tools": [],
+      "allow_extra_calls": true,
+      "arg_mismatches": [],
+      "order_violated": false,
+      "prerequisite_violations": []
+    },
+    "duration_ms": 0.02
+  },
+  {
+    "case_id": "airline-det-02",
+    "eval_type": "regex",
+    "status": "pass",
+    "severity": "high",
+    "reason": "Value matched pattern '\\\\b18E\\\\b'",
+    "details": {
+      "pattern": "\\b18E\\b",
+      "matched": true,
+      "value": "Your seat assignment for the flight LX0112 from CDG to BSL is seat 18E in the Economy class."
+    },
+    "duration_ms": 0.13
+  },
+  {
+    "case_id": "airline-det-03",
+    "eval_type": "tool_call",
+    "status": "pass",
+    "severity": "medium",
+    "reason": "All expected tool calls were made correctly",
+    "details": {
+      "missing_tools": [],
+      "unexpected_tools": [],
+      "allow_extra_calls": true,
+      "arg_mismatches": [],
+      "order_violated": false,
+      "prerequisite_violations": []
+    },
+    "duration_ms": 0.03
+  },
+  {
+    "case_id": "airline-det-04",
+    "eval_type": "tool_call",
+    "status": "fail",
+    "severity": "critical",
+    "reason": "missing calls to ['lookup_policy']",
+    "details": {
+      "missing_tools": [
+        "lookup_policy"
+      ],
+      "unexpected_tools": [],
+      "allow_extra_calls": true,
+      "arg_mismatches": [],
+      "order_violated": false,
+      "prerequisite_violations": []
+    },
+    "duration_ms": 0.02
+  }
+]

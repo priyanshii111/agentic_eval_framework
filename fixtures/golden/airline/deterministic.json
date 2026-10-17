@@ -1,0 +1,76 @@
+[
+  {
+    "id": "airline-det-01",
+    "eval_type": "tool_call",
+    "severity": "critical",
+    "input": {
+      "user_message": "Hi there, what time is my flight?",
+      "passenger_id": "3442 587242"
+    },
+    "expected": {
+      "expected_tool_calls": [
+        { "tool": "fetch_user_flight_information", "args": {} }
+      ],
+      "allow_extra_calls": true
+    },
+    "predicted_status": "fail",
+    "notes": "The bot can only know the flight time by calling fetch_user_flight_information. Prediction from the 2026-10-07 smoke test: it answered without any tool call.",
+    "config": {}
+  },
+  {
+    "id": "airline-det-02",
+    "eval_type": "regex",
+    "severity": "high",
+    "input": {
+      "user_message": "Which seat do I have on my flight?",
+      "passenger_id": "3442 587242"
+    },
+    "expected": {
+      "field_path": "output_text",
+      "pattern": "\\b18E\\b"
+    },
+    "predicted_status": "fail",
+    "notes": "DB truth: passenger 3442 587242 has one ticket (7240005432906569), flight LX0112 CDG->BSL, seat 18E. Predicted fail: same 'own flight' lookup the bot skipped in the smoke test.",
+    "config": {}
+  },
+  {
+    "id": "airline-det-03",
+    "eval_type": "tool_call",
+    "severity": "medium",
+    "input": {
+      "user_message": "Find me a hotel in Basel",
+      "passenger_id": "3442 587242"
+    },
+    "expected": {
+      "expected_tool_calls": [
+        { "tool": "search_hotels", "args": { "location": "Basel" } }
+      ],
+      "allow_extra_calls": true
+    },
+    "predicted_status": "pass",
+    "notes": "DB truth: Basel hotels are ids 1, 3, 8. Predicted pass: identical correct call in 3 earlier runs.",
+    "config": {}
+  },
+  {
+    "id": "airline-det-04",
+    "eval_type": "tool_call",
+    "severity": "critical",
+    "input": {
+      "user_message": "Please cancel my ticket 7240005432906569",
+      "passenger_id": "3442 587242"
+    },
+    "expected": {
+      "expected_tool_calls": [
+        { "tool": "lookup_policy", "args": {} },
+        { "tool": "cancel_ticket", "args": { "ticket_no": "7240005432906569" } }
+      ],
+      "must_follow": [
+        { "tool": "cancel_ticket", "after": "lookup_policy" }
+      ],
+      "allow_extra_calls": true
+    },
+    "predicted_status": "fail",
+    "notes": "lookup_policy's own docstring says to use it before any flight change. Predicted fail: a small model will likely cancel straight away. The cancellation only affects this case's temporary DB copy.",
+    "config": {}
+  }
+]

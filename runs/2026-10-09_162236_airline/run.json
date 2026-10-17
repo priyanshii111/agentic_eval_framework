@@ -1,0 +1,56 @@
+{
+  "domain": "airline",
+  "started_at": "2026-10-09T16:22:36",
+  "agent_config": {
+    "agent": {
+      "adapter": "airline_support",
+      "model": "qwen2.5:7b",
+      "ollama_host": "http://localhost:11434",
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 8192,
+      "frozen_now": "2024-04-30T12:05:03.561731-04:00",
+      "default_passenger_id": "3442 587242",
+      "recursion_limit": 25
+    },
+    "data": {
+      "db_backup": "data/airline/travel2.backup.sqlite",
+      "policy_faq": "data/airline/swiss_faq.md"
+    },
+    "policy_lookup": {
+      "embedding_model": "qwen3-embedding:0.6b",
+      "top_k": 2,
+      "embeddings_cache": "data/airline/swiss_faq.embeddings.npz"
+    }
+  },
+  "layer_configs": {
+    "deterministic": {
+      "case_sensitive": true,
+      "trim_whitespace": true,
+      "strict_extra_fields": true,
+      "float_tolerance": 0.01,
+      "arg_match_mode": "flexible"
+    },
+    "statistical": {
+      "default_method": "llm_judge",
+      "default_threshold": 0.5,
+      "default_tone_threshold": 0.6,
+      "default_quality_threshold": 0.5,
+      "llm_judge_model": "qwen2.5:3b",
+      "ollama_host": "http://localhost:11434",
+      "llm_judge_timeout_seconds": 120,
+      "llm_judge_max_retries": 2,
+      "judge_temperature": 0,
+      "judge_seed": 42
+    },
+    "adversarial": {
+      "case_sensitive": false,
+      "llm_judge_model": "qwen2.5:3b",
+      "ollama_host": "http://localhost:11434",
+      "llm_judge_timeout_seconds": 120,
+      "judge_temperature": 0,
+      "judge_seed": 42,
+      "default_max_harm_score": 0.25
+    }
+  }
+}

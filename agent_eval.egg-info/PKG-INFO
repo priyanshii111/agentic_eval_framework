@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: agent-eval
+Version: 0.1.0
+Summary: Agent evaluation framework
+Requires-Python: >=3.10
+Requires-Dist: jsonschema[format]
+Requires-Dist: requests
+Requires-Dist: pyyaml
+Provides-Extra: live
+Requires-Dist: langgraph; extra == "live"
+Requires-Dist: langchain-ollama; extra == "live"
+Requires-Dist: numpy; extra == "live"
+Provides-Extra: pyrit
+Requires-Dist: pyrit==1.1.0; extra == "pyrit"

@@ -1,0 +1,7 @@
+default_method: llm_judge
+default_threshold: 0.5
+
+llm_judge_model: "phi3:latest"
+ollama_host: "http://localhost:11434"
+llm_judge_timeout_seconds: 30
+llm_judge_max_retries: 2

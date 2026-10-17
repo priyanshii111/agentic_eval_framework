@@ -1,0 +1,102 @@
+[
+  {
+    "case_id": "airline-stat-01",
+    "eval_type": "quality",
+    "status": "fail",
+    "severity": "high",
+    "reason": "Relevance 1/5 (score 0.0) vs threshold 0.5 - judge said: The bot is asking for flight ticket number, which is not relevant to the customer's question about the flight time.",
+    "details": {
+      "criterion": "relevance",
+      "likert_value": 1,
+      "likert_max": 5,
+      "score": 0.0,
+      "threshold": 0.5,
+      "judge_reason": "The bot is asking for flight ticket number, which is not relevant to the customer's question about the flight time.",
+      "judge_model": "qwen2.5:3b"
+    },
+    "duration_ms": 12189.64
+  },
+  {
+    "case_id": "airline-stat-02",
+    "eval_type": "quality",
+    "status": "pass",
+    "severity": "medium",
+    "reason": "Relevance 3/5 (score 0.5) vs threshold 0.5 - judge said: The bot provides a list of hotels in Basel, which is relevant, but does not directly answer the customer's request for a list of hotels. It also does not provide the customer with the list of available hotels.",
+    "details": {
+      "criterion": "relevance",
+      "likert_value": 3,
+      "likert_max": 5,
+      "score": 0.5,
+      "threshold": 0.5,
+      "judge_reason": "The bot provides a list of hotels in Basel, which is relevant, but does not directly answer the customer's request for a list of hotels. It also does not provide the customer with the list of available hotels.",
+      "judge_model": "qwen2.5:3b"
+    },
+    "duration_ms": 6242.94
+  },
+  {
+    "case_id": "airline-stat-03",
+    "eval_type": "tone",
+    "status": "fail",
+    "severity": "medium",
+    "reason": "Tone score 0.2 vs threshold 0.6 — judge said: Response is brief and lacks emotional support.",
+    "details": {
+      "score": 0.2,
+      "threshold": 0.6,
+      "judge_reason": "Response is brief and lacks emotional support.",
+      "judge_model": "qwen2.5:3b"
+    },
+    "duration_ms": 5596.44
+  },
+  {
+    "case_id": "airline-stat-04",
+    "eval_type": "consistency",
+    "status": "pass",
+    "severity": "medium",
+    "reason": "Field 'tool names' was consistent across all samples: [['fetch_user_flight_information'], ['fetch_user_flight_information']]",
+    "details": {
+      "field": "tool names",
+      "values": [
+        [
+          "fetch_user_flight_information"
+        ],
+        [
+          "fetch_user_flight_information"
+        ]
+      ],
+      "compare": "tool_names",
+      "ignore_tools": [],
+      "raw_tool_calls": [
+        [
+          "fetch_user_flight_information"
+        ],
+        [
+          "fetch_user_flight_information"
+        ]
+      ]
+    },
+    "duration_ms": 0.02
+  },
+  {
+    "case_id": "airline-stat-05",
+    "eval_type": "consistency",
+    "status": "pass",
+    "severity": "medium",
+    "reason": "Field 'tool names' was consistent across all samples: [[], []]",
+    "details": {
+      "field": "tool names",
+      "values": [
+        [],
+        []
+      ],
+      "compare": "tool_names",
+      "ignore_tools": [
+        "fetch_user_flight_information"
+      ],
+      "raw_tool_calls": [
+        [],
+        []
+      ]
+    },
+    "duration_ms": 0.01
+  }
+]

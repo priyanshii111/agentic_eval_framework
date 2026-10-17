@@ -1,0 +1,262 @@
+[
+  {
+    "id": "airline-det-01",
+    "eval_type": "tool_call",
+    "severity": "critical",
+    "input": {
+      "user_message": "Hi there, what time is my flight?",
+      "passenger_id": "3442 587242"
+    },
+    "expected": {
+      "expected_tool_calls": [
+        {
+          "tool": "fetch_user_flight_information",
+          "args": {}
+        }
+      ],
+      "allow_extra_calls": true
+    },
+    "predicted_status": "fail",
+    "notes": "The bot can only know the flight time by calling fetch_user_flight_information. Prediction from the 2026-10-07 smoke test: it answered without any tool call.",
+    "config": {},
+    "actual_output": {
+      "output_text": "To assist you with that, I'll need your flight ticket number. Could you please provide it? If you don't have it, we can try to find your flight information using your phone number 3442 587242.",
+      "output_json": null,
+      "tool_calls": []
+    },
+    "capture": {
+      "source": "live",
+      "trace": {
+        "adapter": "airline_support",
+        "model": "qwen2.5:7b",
+        "passenger_id": "3442 587242",
+        "duration_ms": 87667.16,
+        "messages": [
+          {
+            "role": "human",
+            "content": "Hi there, what time is my flight?"
+          },
+          {
+            "role": "ai",
+            "content": "To assist you with that, I'll need your flight ticket number. Could you please provide it? If you don't have it, we can try to find your flight information using your phone number 3442 587242."
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "airline-det-02",
+    "eval_type": "regex",
+    "severity": "high",
+    "input": {
+      "user_message": "Which seat do I have on my flight?",
+      "passenger_id": "3442 587242"
+    },
+    "expected": {
+      "field_path": "output_text",
+      "pattern": "\\b18E\\b"
+    },
+    "predicted_status": "fail",
+    "notes": "DB truth: passenger 3442 587242 has one ticket (7240005432906569), flight LX0112 CDG->BSL, seat 18E. Predicted fail: same 'own flight' lookup the bot skipped in the smoke test.",
+    "config": {},
+    "actual_output": {
+      "output_text": "Your seat assignment for the flight LX0112 from CDG to BSL is seat 18E in the Economy class.",
+      "output_json": null,
+      "tool_calls": [
+        {
+          "tool": "fetch_user_flight_information",
+          "args": {}
+        }
+      ]
+    },
+    "capture": {
+      "source": "live",
+      "trace": {
+        "adapter": "airline_support",
+        "model": "qwen2.5:7b",
+        "passenger_id": "3442 587242",
+        "duration_ms": 21562.49,
+        "messages": [
+          {
+            "role": "human",
+            "content": "Which seat do I have on my flight?"
+          },
+          {
+            "role": "ai",
+            "content": "",
+            "tool_calls": [
+              {
+                "tool": "fetch_user_flight_information",
+                "args": {}
+              }
+            ]
+          },
+          {
+            "role": "tool",
+            "content": "[{\"ticket_no\": \"7240005432906569\", \"book_ref\": \"C46E9F\", \"flight_id\": 19250, \"flight_no\": \"LX0112\", \"departure_airport\": \"CDG\", \"arrival_airport\": \"BSL\", \"scheduled_departure\": \"2024-04-30 12:09:03.561731-04:00\", \"scheduled_arrival\": \"2024-04-30 13:39:03.561731-04:00\", \"seat_no\": \"18E\", \"fare_conditions\": \"Economy\"}]",
+            "tool": "fetch_user_flight_information",
+            "status": "success"
+          },
+          {
+            "role": "ai",
+            "content": "Your seat assignment for the flight LX0112 from CDG to BSL is seat 18E in the Economy class."
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "airline-det-03",
+    "eval_type": "tool_call",
+    "severity": "medium",
+    "input": {
+      "user_message": "Find me a hotel in Basel",
+      "passenger_id": "3442 587242"
+    },
+    "expected": {
+      "expected_tool_calls": [
+        {
+          "tool": "search_hotels",
+          "args": {
+            "location": "Basel"
+          }
+        }
+      ],
+      "allow_extra_calls": true
+    },
+    "predicted_status": "pass",
+    "notes": "DB truth: Basel hotels are ids 1, 3, 8. Predicted pass: identical correct call in 3 earlier runs.",
+    "config": {},
+    "actual_output": {
+      "output_text": "I found some hotels in Basel for you. Here are your options:\n\n1. Hilton Basel - Luxury\n2. Hyatt Regency Basel - Upper Upscale\n3. Holiday Inn Basel - Upper Midscale\n\nWould you like to book any of these hotels? If so, please provide the hotel ID.",
+      "output_json": null,
+      "tool_calls": [
+        {
+          "tool": "search_hotels",
+          "args": {
+            "location": "Basel"
+          }
+        }
+      ]
+    },
+    "capture": {
+      "source": "live",
+      "trace": {
+        "adapter": "airline_support",
+        "model": "qwen2.5:7b",
+        "passenger_id": "3442 587242",
+        "duration_ms": 25536.12,
+        "messages": [
+          {
+            "role": "human",
+            "content": "Find me a hotel in Basel"
+          },
+          {
+            "role": "ai",
+            "content": "",
+            "tool_calls": [
+              {
+                "tool": "search_hotels",
+                "args": {
+                  "location": "Basel"
+                }
+              }
+            ]
+          },
+          {
+            "role": "tool",
+            "content": "[{\"id\": 1, \"name\": \"Hilton Basel\", \"location\": \"Basel\", \"price_tier\": \"Luxury\", \"checkin_date\": \"2024-04-22\", \"checkout_date\": \"2024-04-20\", \"booked\": 0}, {\"id\": 3, \"name\": \"Hyatt Regency Basel\", \"location\": \"Basel\", \"price_tier\": \"Upper Upscale\", \"checkin_date\": \"2024-04-02\", \"checkout_date\": \"2024-04-20\", \"booked\": 0}, {\"id\": 8, \"name\": \"Holiday Inn Basel\", \"location\": \"Basel\", \"price_tier\": \"Upper Midscale\", \"checkin_date\": \"2024-04-24\", \"checkout_date\": \"2024-04-09\", \"booked\": 0}]",
+            "tool": "search_hotels",
+            "status": "success"
+          },
+          {
+            "role": "ai",
+            "content": "I found some hotels in Basel for you. Here are your options:\n\n1. Hilton Basel - Luxury\n2. Hyatt Regency Basel - Upper Upscale\n3. Holiday Inn Basel - Upper Midscale\n\nWould you like to book any of these hotels? If so, please provide the hotel ID."
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "airline-det-04",
+    "eval_type": "tool_call",
+    "severity": "critical",
+    "input": {
+      "user_message": "Please cancel my ticket 7240005432906569",
+      "passenger_id": "3442 587242"
+    },
+    "expected": {
+      "expected_tool_calls": [
+        {
+          "tool": "lookup_policy",
+          "args": {}
+        },
+        {
+          "tool": "cancel_ticket",
+          "args": {
+            "ticket_no": "7240005432906569"
+          }
+        }
+      ],
+      "must_follow": [
+        {
+          "tool": "cancel_ticket",
+          "after": "lookup_policy"
+        }
+      ],
+      "allow_extra_calls": true
+    },
+    "predicted_status": "fail",
+    "notes": "lookup_policy's own docstring says to use it before any flight change. Predicted fail: a small model will likely cancel straight away. The cancellation only affects this case's temporary DB copy.",
+    "config": {},
+    "actual_output": {
+      "output_text": "Your ticket has been successfully cancelled. If you need any further assistance, feel free to ask.",
+      "output_json": null,
+      "tool_calls": [
+        {
+          "tool": "cancel_ticket",
+          "args": {
+            "ticket_no": "7240005432906569"
+          }
+        }
+      ]
+    },
+    "capture": {
+      "source": "live",
+      "trace": {
+        "adapter": "airline_support",
+        "model": "qwen2.5:7b",
+        "passenger_id": "3442 587242",
+        "duration_ms": 15890.77,
+        "messages": [
+          {
+            "role": "human",
+            "content": "Please cancel my ticket 7240005432906569"
+          },
+          {
+            "role": "ai",
+            "content": "",
+            "tool_calls": [
+              {
+                "tool": "cancel_ticket",
+                "args": {
+                  "ticket_no": "7240005432906569"
+                }
+              }
+            ]
+          },
+          {
+            "role": "tool",
+            "content": "Ticket successfully cancelled.",
+            "tool": "cancel_ticket",
+            "status": "success"
+          },
+          {
+            "role": "ai",
+            "content": "Your ticket has been successfully cancelled. If you need any further assistance, feel free to ask."
+          }
+        ]
+      }
+    }
+  }
+]

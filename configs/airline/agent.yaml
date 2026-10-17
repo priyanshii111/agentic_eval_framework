@@ -1,0 +1,25 @@
+# Settings for the live airline support agent (used only in --mode live).
+# Changing model / time / data paths should only ever require editing this file.
+# Relative paths are resolved from the project root (run commands from there).
+
+agent:
+  adapter: "airline_support"   # which entry in integrations/agent.py ADAPTERS calls this agent
+  model: "qwen2.5:7b"
+  ollama_host: "http://localhost:11434"
+  temperature: 0          # tutorial used 1; 0 = as repeatable as possible
+  seed: 42                # fixed seed: same input -> more likely the same answer
+  num_ctx: 8192           # context window; Ollama's small default silently cuts off tools/instructions
+  frozen_now: "2024-04-30T12:05:03.561731-04:00"   # the DB's own reference "now" (never the real clock)
+  default_passenger_id: "3442 587242"              # tutorial's demo passenger; a test case can override it
+  recursion_limit: 25     # max assistant<->tool steps per answer; stops an endless tool loop
+
+data:
+  db_backup: "data/airline/travel2.backup.sqlite"  # clean copy, never written to
+  policy_faq: "data/airline/swiss_faq.md"
+
+policy_lookup:
+  embedding_model: "qwen3-embedding:0.6b"
+  top_k: 2                # how many FAQ sections to return (tutorial used 2)
+  # Saved section embeddings: built once (~1 min), then loaded instantly. Rebuilt
+  # automatically if the FAQ text or embedding model changes. Delete to force a rebuild.
+  embeddings_cache: "data/airline/swiss_faq.embeddings.npz"

@@ -1,0 +1,354 @@
+[
+  {
+    "id": "airline-stat-01",
+    "eval_type": "quality",
+    "severity": "high",
+    "input": {
+      "user_message": "Hi there, what time is my flight?",
+      "passenger_id": "3442 587242"
+    },
+    "expected": {
+      "criterion": "relevance",
+      "question": "Hi there, what time is my flight?"
+    },
+    "predicted_status": "fail",
+    "notes": "No reference answer: the judge rates how well the answer addresses the question. Predicted fail: the bot asks for a ticket number instead of giving the time (det-01, smoke test); the 3B judge scored that answer 1/5 in the judge comparison.",
+    "config": {},
+    "actual_output": {
+      "output_text": "To assist you with that, I'll need your flight ticket number. Could you please provide it? If you don't have it, we can try to find your flight information using your phone number 3442 587242.",
+      "output_json": null,
+      "tool_calls": []
+    },
+    "capture": {
+      "source": "live",
+      "trace": {
+        "adapter": "airline_support",
+        "model": "qwen2.5:7b",
+        "passenger_id": "3442 587242",
+        "duration_ms": 99592.78,
+        "messages": [
+          {
+            "role": "human",
+            "content": "Hi there, what time is my flight?"
+          },
+          {
+            "role": "ai",
+            "content": "To assist you with that, I'll need your flight ticket number. Could you please provide it? If you don't have it, we can try to find your flight information using your phone number 3442 587242."
+          }
+        ]
+      },
+      "reused_from": "airline-det-01"
+    }
+  },
+  {
+    "id": "airline-stat-02",
+    "eval_type": "quality",
+    "severity": "medium",
+    "input": {
+      "user_message": "Find me a hotel in Basel",
+      "passenger_id": "3442 587242"
+    },
+    "expected": {
+      "criterion": "relevance",
+      "question": "Find me a hotel in Basel"
+    },
+    "predicted_status": "pass",
+    "notes": "Predicted pass: the bot lists the 3 Basel hotels; the 3B judge scored that answer 3/5 (= threshold 0.5), so it passes but sits right at the line.",
+    "config": {},
+    "actual_output": {
+      "output_text": "I found some hotels in Basel for you. Here are your options:\n\n1. Hilton Basel - Luxury\n2. Hyatt Regency Basel - Upper Upscale\n3. Holiday Inn Basel - Upper Midscale\n\nWould you like to book any of these hotels? If so, please provide the hotel ID.",
+      "output_json": null,
+      "tool_calls": [
+        {
+          "tool": "search_hotels",
+          "args": {
+            "location": "Basel"
+          }
+        }
+      ]
+    },
+    "capture": {
+      "source": "live",
+      "trace": {
+        "adapter": "airline_support",
+        "model": "qwen2.5:7b",
+        "passenger_id": "3442 587242",
+        "duration_ms": 27508.64,
+        "messages": [
+          {
+            "role": "human",
+            "content": "Find me a hotel in Basel"
+          },
+          {
+            "role": "ai",
+            "content": "",
+            "tool_calls": [
+              {
+                "tool": "search_hotels",
+                "args": {
+                  "location": "Basel"
+                }
+              }
+            ]
+          },
+          {
+            "role": "tool",
+            "content": "[{\"id\": 1, \"name\": \"Hilton Basel\", \"location\": \"Basel\", \"price_tier\": \"Luxury\", \"checkin_date\": \"2024-04-22\", \"checkout_date\": \"2024-04-20\", \"booked\": 0}, {\"id\": 3, \"name\": \"Hyatt Regency Basel\", \"location\": \"Basel\", \"price_tier\": \"Upper Upscale\", \"checkin_date\": \"2024-04-02\", \"checkout_date\": \"2024-04-20\", \"booked\": 0}, {\"id\": 8, \"name\": \"Holiday Inn Basel\", \"location\": \"Basel\", \"price_tier\": \"Upper Midscale\", \"checkin_date\": \"2024-04-24\", \"checkout_date\": \"2024-04-09\", \"booked\": 0}]",
+            "tool": "search_hotels",
+            "status": "success"
+          },
+          {
+            "role": "ai",
+            "content": "I found some hotels in Basel for you. Here are your options:\n\n1. Hilton Basel - Luxury\n2. Hyatt Regency Basel - Upper Upscale\n3. Holiday Inn Basel - Upper Midscale\n\nWould you like to book any of these hotels? If so, please provide the hotel ID."
+          }
+        ]
+      },
+      "reused_from": "airline-det-03"
+    }
+  },
+  {
+    "id": "airline-stat-03",
+    "eval_type": "tone",
+    "severity": "medium",
+    "input": {
+      "user_message": "Please cancel my ticket 7240005432906569",
+      "passenger_id": "3442 587242"
+    },
+    "expected": {
+      "situation": "A customer asks the airline support bot to cancel their flight ticket 7240005432906569, their only booked flight."
+    },
+    "predicted_status": "pass",
+    "notes": "Predicted pass: the bot confirms the cancellation politely; the same reply scored 0.7 (vs 0.6) most of the time but 0.5 once (finding #54), so a fail here would be judge wobble, not necessarily a worse answer.",
+    "config": {},
+    "actual_output": {
+      "output_text": "Your ticket has been successfully cancelled. If you need any further assistance, feel free to ask.",
+      "output_json": null,
+      "tool_calls": [
+        {
+          "tool": "cancel_ticket",
+          "args": {
+            "ticket_no": "7240005432906569"
+          }
+        }
+      ]
+    },
+    "capture": {
+      "source": "live",
+      "trace": {
+        "adapter": "airline_support",
+        "model": "qwen2.5:7b",
+        "passenger_id": "3442 587242",
+        "duration_ms": 16540.18,
+        "messages": [
+          {
+            "role": "human",
+            "content": "Please cancel my ticket 7240005432906569"
+          },
+          {
+            "role": "ai",
+            "content": "",
+            "tool_calls": [
+              {
+                "tool": "cancel_ticket",
+                "args": {
+                  "ticket_no": "7240005432906569"
+                }
+              }
+            ]
+          },
+          {
+            "role": "tool",
+            "content": "Ticket successfully cancelled.",
+            "tool": "cancel_ticket",
+            "status": "success"
+          },
+          {
+            "role": "ai",
+            "content": "Your ticket has been successfully cancelled. If you need any further assistance, feel free to ask."
+          }
+        ]
+      },
+      "reused_from": "airline-det-04"
+    }
+  },
+  {
+    "id": "airline-stat-04",
+    "eval_type": "consistency",
+    "severity": "medium",
+    "input": {
+      "user_messages": [
+        "What's my booking reference?",
+        "Can you tell me my booking code?"
+      ],
+      "passenger_id": "3442 587242"
+    },
+    "expected": {
+      "compare": "tool_names",
+      "ignore_tools": []
+    },
+    "predicted_status": "fail",
+    "notes": "Paraphrase consistency: both wordings need the same lookup (fetch_user_flight_information returns book_ref C46E9F). Not covered by any deterministic case. ignore_tools is empty: every tool counts. Predicted fail: the bot's tool use depends on phrasing (finding #45).",
+    "config": {},
+    "actual_outputs": [
+      {
+        "output_text": "Your booking reference is C46E9F. This corresponds to your flight LX0112 from CDG to BSL, which is scheduled to depart at 12:09 PM and arrive at 01:39 PM on April 30, 2024. Your seat is 18E in Economy class.",
+        "output_json": null,
+        "tool_calls": [
+          {
+            "tool": "fetch_user_flight_information",
+            "args": {}
+          }
+        ]
+      },
+      {
+        "output_text": "Based on the information provided, your booking reference (which can be considered as your booking code) is **C46E9F**. \n\nIf you need any further assistance or have more questions, feel free to ask!",
+        "output_json": null,
+        "tool_calls": [
+          {
+            "tool": "fetch_user_flight_information",
+            "args": {}
+          }
+        ]
+      }
+    ],
+    "capture": {
+      "source": "live",
+      "traces": [
+        {
+          "adapter": "airline_support",
+          "model": "qwen2.5:7b",
+          "passenger_id": "3442 587242",
+          "duration_ms": 38831.67,
+          "messages": [
+            {
+              "role": "human",
+              "content": "What's my booking reference?"
+            },
+            {
+              "role": "ai",
+              "content": "To assist you with finding your booking reference, I will first fetch all your flight information to see if it contains the booking reference.\n\n",
+              "tool_calls": [
+                {
+                  "tool": "fetch_user_flight_information",
+                  "args": {}
+                }
+              ]
+            },
+            {
+              "role": "tool",
+              "content": "[{\"ticket_no\": \"7240005432906569\", \"book_ref\": \"C46E9F\", \"flight_id\": 19250, \"flight_no\": \"LX0112\", \"departure_airport\": \"CDG\", \"arrival_airport\": \"BSL\", \"scheduled_departure\": \"2024-04-30 12:09:03.561731-04:00\", \"scheduled_arrival\": \"2024-04-30 13:39:03.561731-04:00\", \"seat_no\": \"18E\", \"fare_conditions\": \"Economy\"}]",
+              "tool": "fetch_user_flight_information",
+              "status": "success"
+            },
+            {
+              "role": "ai",
+              "content": "Your booking reference is C46E9F. This corresponds to your flight LX0112 from CDG to BSL, which is scheduled to depart at 12:09 PM and arrive at 01:39 PM on April 30, 2024. Your seat is 18E in Economy class."
+            }
+          ]
+        },
+        {
+          "adapter": "airline_support",
+          "model": "qwen2.5:7b",
+          "passenger_id": "3442 587242",
+          "duration_ms": 38280.9,
+          "messages": [
+            {
+              "role": "human",
+              "content": "Can you tell me my booking code?"
+            },
+            {
+              "role": "ai",
+              "content": "To assist you with finding your booking code, I will first fetch your flight information using your provided number. Please note that this number might be a reference or part of a larger identifier, so we'll proceed with the information you have.\n\nLet's start by fetching your flight information.\n",
+              "tool_calls": [
+                {
+                  "tool": "fetch_user_flight_information",
+                  "args": {}
+                }
+              ]
+            },
+            {
+              "role": "tool",
+              "content": "[{\"ticket_no\": \"7240005432906569\", \"book_ref\": \"C46E9F\", \"flight_id\": 19250, \"flight_no\": \"LX0112\", \"departure_airport\": \"CDG\", \"arrival_airport\": \"BSL\", \"scheduled_departure\": \"2024-04-30 12:09:03.561731-04:00\", \"scheduled_arrival\": \"2024-04-30 13:39:03.561731-04:00\", \"seat_no\": \"18E\", \"fare_conditions\": \"Economy\"}]",
+              "tool": "fetch_user_flight_information",
+              "status": "success"
+            },
+            {
+              "role": "ai",
+              "content": "Based on the information provided, your booking reference (which can be considered as your booking code) is **C46E9F**. \n\nIf you need any further assistance or have more questions, feel free to ask!"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "airline-stat-05",
+    "eval_type": "consistency",
+    "severity": "medium",
+    "input": {
+      "user_messages": [
+        "Can I change my booking online?",
+        "Is it possible to rebook my flight on the website?"
+      ],
+      "passenger_id": "3442 587242"
+    },
+    "expected": {
+      "compare": "tool_names",
+      "ignore_tools": [
+        "fetch_user_flight_information"
+      ]
+    },
+    "predicted_status": "pass",
+    "notes": "Paraphrase consistency on a policy question: the meaningful tool is lookup_policy. JUDGEMENT CALL: fetch_user_flight_information is ignored because looking up the passenger's own flight first is a harmless extra step for this question, not a different behaviour. Predicted pass: both wordings should trigger lookup_policy.",
+    "config": {},
+    "actual_outputs": [
+      {
+        "output_text": "To assist you with changing your booking online, I need to first fetch your flight information. Could you please provide me with your booking reference number or any other relevant details that might help identify your booking? If you don't have these details, we can try to find your booking using your phone number 3442 587242.",
+        "output_json": null,
+        "tool_calls": []
+      },
+      {
+        "output_text": "To assist you with rebooking your flight, I need to first verify if you have any existing flight tickets. Could you please provide me with your booking reference number or any part of your booking details? If you don't have it, we can try searching for your flights using your phone number (3442 587242) as an alternative.",
+        "output_json": null,
+        "tool_calls": []
+      }
+    ],
+    "capture": {
+      "source": "live",
+      "traces": [
+        {
+          "adapter": "airline_support",
+          "model": "qwen2.5:7b",
+          "passenger_id": "3442 587242",
+          "duration_ms": 15290.62,
+          "messages": [
+            {
+              "role": "human",
+              "content": "Can I change my booking online?"
+            },
+            {
+              "role": "ai",
+              "content": "To assist you with changing your booking online, I need to first fetch your flight information. Could you please provide me with your booking reference number or any other relevant details that might help identify your booking? If you don't have these details, we can try to find your booking using your phone number 3442 587242."
+            }
+          ]
+        },
+        {
+          "adapter": "airline_support",
+          "model": "qwen2.5:7b",
+          "passenger_id": "3442 587242",
+          "duration_ms": 15971.03,
+          "messages": [
+            {
+              "role": "human",
+              "content": "Is it possible to rebook my flight on the website?"
+            },
+            {
+              "role": "ai",
+              "content": "To assist you with rebooking your flight, I need to first verify if you have any existing flight tickets. Could you please provide me with your booking reference number or any part of your booking details? If you don't have it, we can try searching for your flights using your phone number (3442 587242) as an alternative."
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

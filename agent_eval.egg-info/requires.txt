@@ -1,0 +1,11 @@
+jsonschema[format]
+requests
+pyyaml
+
+[live]
+langgraph
+langchain-ollama
+numpy
+
+[pyrit]
+pyrit==1.1.0

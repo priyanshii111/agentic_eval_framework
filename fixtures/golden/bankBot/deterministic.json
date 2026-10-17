@@ -1,0 +1,325 @@
+[
+  {
+    "id": "bank-exact-01",
+    "eval_type": "exact_match",
+    "severity": "high",
+    "input": {
+      "user_message": "Transfer ₹8000 to account 0004567891 (Ravi Kumar)."
+    },
+    "actual_output": {
+      "output_text": "{\"transaction_id\": \"TXN-20260923-4821\", \"status\": \"SUCCESS\", \"account_status\": \"ACTIVE\", \"from_account\": \"0001234567\", \"to_account\": \"0004567891\", \"amount\": 8000, \"available_balance\": 12000, \"currency\": \"INR\", \"timestamp\": \"2026-09-23T10:15:00Z\"}",
+      "output_json": {
+        "transaction_id": "TXN-20260923-4821",
+        "status": "SUCCESS",
+        "account_status": "ACTIVE",
+        "from_account": "0001234567",
+        "to_account": "0004567891",
+        "amount": 8000,
+        "available_balance": 12000,
+        "currency": "INR",
+        "timestamp": "2026-09-23T10:15:00Z"
+      },
+      "tool_calls": [
+        { "tool": "verify_identity", "args": { "account_id": "0001234567" } },
+        { "tool": "transfer_funds", "args": { "from_account": "0001234567", "to_account": "0004567891", "amount": 8000 } }
+      ]
+    },
+    "expected": {
+      "field_path": "account_status",
+      "expected_output": "ACTIVE"
+    },
+    "config": {}
+  },
+  {
+    "id": "bank-schema-01-pass",
+    "eval_type": "json_schema",
+    "severity": "critical",
+    "input": {
+      "user_message": "Transfer ₹8000 to account 0004567891 (Ravi Kumar)."
+    },
+    "actual_output": {
+      "output_text": "{\"transaction_id\": \"TXN-20260923-4821\", \"status\": \"SUCCESS\", \"account_status\": \"ACTIVE\", \"from_account\": \"0001234567\", \"to_account\": \"0004567891\", \"amount\": 8000, \"available_balance\": 12000, \"currency\": \"INR\", \"timestamp\": \"2026-09-23T10:15:00Z\"}",
+      "output_json": {
+        "transaction_id": "TXN-20260923-4821",
+        "status": "SUCCESS",
+        "account_status": "ACTIVE",
+        "from_account": "0001234567",
+        "to_account": "0004567891",
+        "amount": 8000,
+        "available_balance": 12000,
+        "currency": "INR",
+        "timestamp": "2026-09-23T10:15:00Z"
+      },
+      "tool_calls": [
+        { "tool": "verify_identity", "args": { "account_id": "0001234567" } },
+        { "tool": "transfer_funds", "args": { "from_account": "0001234567", "to_account": "0004567891", "amount": 8000 } }
+      ]
+    },
+    "expected": {
+      "expected_schema": {
+        "type": "object",
+        "required": ["transaction_id", "status", "account_status", "from_account", "to_account", "amount", "available_balance", "currency", "timestamp"],
+        "properties": {
+          "transaction_id": { "type": "string" },
+          "status": { "type": "string" },
+          "account_status": { "type": "string" },
+          "from_account": { "type": "string" },
+          "to_account": { "type": "string" },
+          "amount": { "type": "number" },
+          "available_balance": { "type": "number" },
+          "currency": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "config": {}
+  },
+  {
+    "id": "bank-schema-01-fail",
+    "eval_type": "json_schema",
+    "severity": "critical",
+    "input": {
+      "user_message": "Transfer ₹8000 to account 0004567891 (Ravi Kumar)."
+    },
+    "actual_output": {
+      "output_text": "{\"transaction_id\": \"TXN-20260923-4821\", \"status\": \"SUCCESS\", \"account_status\": \"ACTIVE\", \"from_account\": \"0001234567\", \"to_account\": \"0004567891\", \"amount\": 8000, \"available_balance\": 12000, \"currency\": \"INR\", \"timestamp\": \"23rd Sept 2026, 10:15 AM\"}",
+      "output_json": {
+        "transaction_id": "TXN-20260923-4821",
+        "status": "SUCCESS",
+        "account_status": "ACTIVE",
+        "from_account": "0001234567",
+        "to_account": "0004567891",
+        "amount": 8000,
+        "available_balance": 12000,
+        "currency": "INR",
+        "timestamp": "23rd Sept 2026, 10:15 AM"
+      },
+      "tool_calls": [
+        { "tool": "verify_identity", "args": { "account_id": "0001234567" } },
+        { "tool": "transfer_funds", "args": { "from_account": "0001234567", "to_account": "0004567891", "amount": 8000 } }
+      ]
+    },
+    "expected": {
+      "expected_schema": {
+        "type": "object",
+        "required": ["transaction_id", "status", "account_status", "from_account", "to_account", "amount", "available_balance", "currency", "timestamp"],
+        "properties": {
+          "transaction_id": { "type": "string" },
+          "status": { "type": "string" },
+          "account_status": { "type": "string" },
+          "from_account": { "type": "string" },
+          "to_account": { "type": "string" },
+          "amount": { "type": "number" },
+          "available_balance": { "type": "number" },
+          "currency": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "config": {}
+  },
+  {
+    "id": "bank-constraints-01-pass",
+    "eval_type": "constraints",
+    "severity": "critical",
+    "input": {
+      "user_message": "Transfer ₹8000 to account 0004567891 (Ravi Kumar)."
+    },
+    "actual_output": {
+      "output_text": "{\"transaction_id\": \"TXN-20260923-4821\", \"status\": \"SUCCESS\", \"account_status\": \"ACTIVE\", \"from_account\": \"0001234567\", \"to_account\": \"0004567891\", \"amount\": 8000, \"available_balance\": 12000, \"currency\": \"INR\", \"timestamp\": \"2026-09-23T10:15:00Z\"}",
+      "output_json": {
+        "transaction_id": "TXN-20260923-4821",
+        "status": "SUCCESS",
+        "account_status": "ACTIVE",
+        "from_account": "0001234567",
+        "to_account": "0004567891",
+        "amount": 8000,
+        "available_balance": 12000,
+        "currency": "INR",
+        "timestamp": "2026-09-23T10:15:00Z"
+      },
+      "tool_calls": [
+        { "tool": "verify_identity", "args": { "account_id": "0001234567" } },
+        { "tool": "transfer_funds", "args": { "from_account": "0001234567", "to_account": "0004567891", "amount": 8000 } }
+      ]
+    },
+    "expected": {
+      "constraints": {
+        "all": [
+          { "type": "field_comparison", "field": "amount", "operator": "lte", "compare_to_field": "available_balance" }
+        ]
+      }
+    },
+    "config": {}
+  },
+  {
+    "id": "bank-constraints-01-fail",
+    "eval_type": "constraints",
+    "severity": "critical",
+    "input": {
+      "user_message": "Transfer ₹15000 to account 0004567891 (Ravi Kumar)."
+    },
+    "actual_output": {
+      "output_text": "{\"transaction_id\": \"TXN-20260923-4822\", \"status\": \"SUCCESS\", \"account_status\": \"ACTIVE\", \"from_account\": \"0001234567\", \"to_account\": \"0004567891\", \"amount\": 15000, \"available_balance\": 12000, \"currency\": \"INR\", \"timestamp\": \"2026-09-23T10:20:00Z\"}",
+      "output_json": {
+        "transaction_id": "TXN-20260923-4822",
+        "status": "SUCCESS",
+        "account_status": "ACTIVE",
+        "from_account": "0001234567",
+        "to_account": "0004567891",
+        "amount": 15000,
+        "available_balance": 12000,
+        "currency": "INR",
+        "timestamp": "2026-09-23T10:20:00Z"
+      },
+      "tool_calls": [
+        { "tool": "verify_identity", "args": { "account_id": "0001234567" } },
+        { "tool": "transfer_funds", "args": { "from_account": "0001234567", "to_account": "0004567891", "amount": 15000 } }
+      ]
+    },
+    "expected": {
+      "constraints": {
+        "all": [
+          { "type": "field_comparison", "field": "amount", "operator": "lte", "compare_to_field": "available_balance" }
+        ]
+      }
+    },
+    "config": {}
+  },
+  {
+    "id": "bank-tool-01-pass",
+    "eval_type": "tool_call",
+    "severity": "critical",
+    "input": {
+      "user_message": "Transfer ₹8000 to account 0004567891 (Ravi Kumar)."
+    },
+    "actual_output": {
+      "output_text": "{\"transaction_id\": \"TXN-20260923-4821\", \"status\": \"SUCCESS\", \"account_status\": \"ACTIVE\", \"from_account\": \"0001234567\", \"to_account\": \"0004567891\", \"amount\": 8000, \"available_balance\": 12000, \"currency\": \"INR\", \"timestamp\": \"2026-09-23T10:15:00Z\"}",
+      "output_json": {
+        "transaction_id": "TXN-20260923-4821",
+        "status": "SUCCESS",
+        "account_status": "ACTIVE",
+        "from_account": "0001234567",
+        "to_account": "0004567891",
+        "amount": 8000,
+        "available_balance": 12000,
+        "currency": "INR",
+        "timestamp": "2026-09-23T10:15:00Z"
+      },
+      "tool_calls": [
+        { "tool": "verify_identity", "args": { "account_id": "0001234567" } },
+        { "tool": "transfer_funds", "args": { "from_account": "0001234567", "to_account": "0004567891", "amount": 8000 } }
+      ]
+    },
+    "expected": {
+      "expected_tool_calls": [
+        { "tool": "verify_identity", "args": { "account_id": "0001234567" } },
+        { "tool": "transfer_funds", "args": { "from_account": "0001234567", "to_account": "0004567891", "amount": 8000 } }
+      ],
+      "enforce_order": false,
+      "must_follow": [
+        { "tool": "transfer_funds", "after": "verify_identity" }
+      ]
+    },
+    "config": {}
+  },
+  {
+    "id": "bank-tool-01-fail",
+    "eval_type": "tool_call",
+    "severity": "critical",
+    "input": {
+      "user_message": "Transfer ₹8000 to account 0004567891 (Ravi Kumar)."
+    },
+    "actual_output": {
+      "output_text": "{\"transaction_id\": \"TXN-20260923-4823\", \"status\": \"SUCCESS\", \"account_status\": \"ACTIVE\", \"from_account\": \"0001234567\", \"to_account\": \"0004567891\", \"amount\": 8000, \"available_balance\": 12000, \"currency\": \"INR\", \"timestamp\": \"2026-09-23T10:25:00Z\"}",
+      "output_json": {
+        "transaction_id": "TXN-20260923-4823",
+        "status": "SUCCESS",
+        "account_status": "ACTIVE",
+        "from_account": "0001234567",
+        "to_account": "0004567891",
+        "amount": 8000,
+        "available_balance": 12000,
+        "currency": "INR",
+        "timestamp": "2026-09-23T10:25:00Z"
+      },
+      "tool_calls": [
+        { "tool": "transfer_funds", "args": { "from_account": "0001234567", "to_account": "0004567891", "amount": 8000 } },
+        { "tool": "verify_identity", "args": { "account_id": "0001234567" } }
+      ]
+    },
+    "expected": {
+      "expected_tool_calls": [
+        { "tool": "verify_identity", "args": { "account_id": "0001234567" } },
+        { "tool": "transfer_funds", "args": { "from_account": "0001234567", "to_account": "0004567891", "amount": 8000 } }
+      ],
+      "enforce_order": false,
+      "must_follow": [
+        { "tool": "transfer_funds", "after": "verify_identity" }
+      ]
+    },
+    "config": {}
+  },
+  {
+    "id": "bank-regex-01-pass",
+    "eval_type": "regex",
+    "severity": "medium",
+    "input": {
+      "user_message": "Transfer ₹8000 to account 0004567891 (Ravi Kumar)."
+    },
+    "actual_output": {
+      "output_text": "{\"transaction_id\": \"TXN-20260923-4821\", \"status\": \"SUCCESS\", \"account_status\": \"ACTIVE\", \"from_account\": \"0001234567\", \"to_account\": \"0004567891\", \"amount\": 8000, \"available_balance\": 12000, \"currency\": \"INR\", \"timestamp\": \"2026-09-23T10:15:00Z\"}",
+      "output_json": {
+        "transaction_id": "TXN-20260923-4821",
+        "status": "SUCCESS",
+        "account_status": "ACTIVE",
+        "from_account": "0001234567",
+        "to_account": "0004567891",
+        "amount": 8000,
+        "available_balance": 12000,
+        "currency": "INR",
+        "timestamp": "2026-09-23T10:15:00Z"
+      },
+      "tool_calls": [
+        { "tool": "verify_identity", "args": { "account_id": "0001234567" } },
+        { "tool": "transfer_funds", "args": { "from_account": "0001234567", "to_account": "0004567891", "amount": 8000 } }
+      ]
+    },
+    "expected": {
+      "field_path": "transaction_id",
+      "pattern": "^TXN-\\d{8}-\\d{4}$"
+    },
+    "config": {}
+  },
+  {
+    "id": "bank-regex-01-fail",
+    "eval_type": "regex",
+    "severity": "medium",
+    "input": {
+      "user_message": "Transfer ₹8000 to account 0004567891 (Ravi Kumar)."
+    },
+    "actual_output": {
+      "output_text": "{\"transaction_id\": \"TX-2026-4821\", \"status\": \"SUCCESS\", \"account_status\": \"ACTIVE\", \"from_account\": \"0001234567\", \"to_account\": \"0004567891\", \"amount\": 8000, \"available_balance\": 12000, \"currency\": \"INR\", \"timestamp\": \"2026-09-23T10:15:00Z\"}",
+      "output_json": {
+        "transaction_id": "TX-2026-4821",
+        "status": "SUCCESS",
+        "account_status": "ACTIVE",
+        "from_account": "0001234567",
+        "to_account": "0004567891",
+        "amount": 8000,
+        "available_balance": 12000,
+        "currency": "INR",
+        "timestamp": "2026-09-23T10:15:00Z"
+      },
+      "tool_calls": [
+        { "tool": "verify_identity", "args": { "account_id": "0001234567" } },
+        { "tool": "transfer_funds", "args": { "from_account": "0001234567", "to_account": "0004567891", "amount": 8000 } }
+      ]
+    },
+    "expected": {
+      "field_path": "transaction_id",
+      "pattern": "^TXN-\\d{8}-\\d{4}$"
+    },
+    "config": {}
+  }
+]

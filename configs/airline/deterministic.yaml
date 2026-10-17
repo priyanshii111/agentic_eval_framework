@@ -1,0 +1,16 @@
+# Grading defaults for the airline deterministic layer.
+# Flat keys: the runner merges this file into every case's "config"
+# (a case's own config wins). Values match each checker's built-in default.
+
+# exact_match
+case_sensitive: true
+trim_whitespace: true
+
+# json_schema
+strict_extra_fields: true
+
+# constraints
+float_tolerance: 0.01
+
+# tool_call
+arg_match_mode: flexible

@@ -1,0 +1,35 @@
+# Tunable defaults for the deterministic evaluation layer.
+#
+# NOTE: not yet wired up — no config.py loader / merge step exists yet to
+# read this file and pass it into each checker. Every value here matches
+# the .get(key, default) fallback currently hardcoded in each checker, so
+# wiring this up later won't silently change behavior. Until then, editing
+# this file has no effect on an actual run.
+#
+# Cross-layer / pipeline concerns (e.g. "skip later layers if a critical
+# case fails") do NOT belong here — that's evaluation.yaml / the runner's
+# job. This file only describes how deterministic checks behave internally.
+
+exact_match:
+  case_sensitive: true
+  trim_whitespace: true
+
+json_schema:
+  strict_extra_fields: true
+  # Not yet implemented in json_schema.py — setting this to true currently
+  # has no effect. Flagged honestly rather than silently omitted.
+  coerce_numeric_strings: false
+
+regex:
+  # regex.py has not been built in this project yet — this section is a
+  # placeholder for whoever implements it.
+  timeout_ms: 1000
+
+constraints:
+  # Not yet consumed — no "length" rule type exists in constraints.py yet
+  # (only range, contains, one_of are implemented).
+  length_unit: words
+  float_tolerance: 0.01
+
+tool_call:
+  arg_match_mode: flexible
