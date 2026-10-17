@@ -302,13 +302,3 @@ Every extension point is a lookup table, so adding something is one entry, not a
 
 ---
 
-## Known limitations
-
-- **CPU speed:** a live answer takes ~15 s–3 min (the first call of a run is the slowest); the full 14-case live run (17 agent calls, including attack variants) measured **11 min 36 s**. Use `--layer` for quicker partial runs.
-- **LLM judges wobble:** even with `temperature 0` + `seed 42`, the same judge call occasionally scores differently on CPU, which can flip a borderline case. Judges are also sensitive to how a `situation` is worded.
-- **The `qwen2.5:3b` judge is harsh; `qwen2.5:7b` is lenient** and passes the agent's own mistakes (self-grading bias, since the agent is also 7B). 3B was kept.
-- **Narrow checks see only what they look for.** A pass means "this risk didn't show up", not "the answer was fine".
-- **Encoded attacks** (Base64, leetspeak, …) mostly confuse this 7B agent: a pass can mean *it didn't understand*, not *it resisted*. `unauthorized_action` flags passes with no tool calls.
-- **Single-turn attacks only:** multi-turn PyRIT attacks need an attacker model and are too slow on CPU.
-- **Memory pressure:** running static and live back to back on 16 GB RAM can cause a one-off judge timeout (shown as `error`, not `fail`). Re-run.
-- The airline agent's own known weaknesses are deliberately **not fixed**: we test the real agent, not an improved one (see ADDITIONS.md).
