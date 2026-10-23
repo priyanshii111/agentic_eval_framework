@@ -7,7 +7,7 @@ assistant -> tools -> assistant ... until the model answers without a tool call.
 - The empty-response re-prompt loop is capped (tutorial: `while True`), so a
   small local model can never freeze an evaluation run.
 - Tool errors use ToolNode's built-in handle_tool_errors (LangGraph 1.x) with
-  the tutorial's exact message, instead of a custom fallback node.
+  the source's exact message, instead of a custom fallback node.
 """
 from datetime import datetime
 from typing import Annotated
