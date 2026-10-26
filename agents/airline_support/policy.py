@@ -11,7 +11,7 @@ from langchain_ollama import OllamaEmbeddings
 
 
 def split_faq(text: str) -> list[str]:
-    """Split the FAQ markdown into sections, one per '##' heading (same split as the tutorial)."""
+    """Split the FAQ markdown into sections, one per '##' heading ."""
     return [section.strip() for section in re.split(r"(?=\n##)", text) if section.strip()]
 
 
@@ -71,7 +71,7 @@ class PolicyRetriever:
         """Return the k sections most similar to the question, best first.
 
         Ties are broken by section order in the FAQ, so the same question
-        always returns the same sections in the same order (Principle 1).
+        always returns the same sections in the same order .
         """
         query_vector = _normalize(np.array(self._embedder.embed_query(question)))
         scores = self._vectors @ query_vector
