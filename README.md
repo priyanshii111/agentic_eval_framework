@@ -245,7 +245,7 @@ agentic_eval_framework/
 ├── pyproject.toml                     # extras: [live], [pyrit]
 ├── agents/airline_support/            # the agent UNDER TEST (kept outside the framework)
 │   ├── graph.py                       #   LangGraph assistant ↔ tools loop on Qwen (build_agent, build_retriever)
-│   ├── tools.py                       #   the tutorial's 17 tools, bound to one DB copy + frozen "now"
+│   ├── tools.py                       #   the 17 tools, bound to one DB copy + frozen "now"
 │   └── policy.py                      #   FAQ policy search with Qwen embeddings
 ├── src/agent_eval/
 │   ├── evaluators/
