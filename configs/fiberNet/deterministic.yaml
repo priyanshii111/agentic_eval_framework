@@ -1,7 +1,5 @@
 # Tunable defaults for the deterministic evaluation layer.
-#
-# NOTE: not yet wired up — no config.py loader / merge step exists yet to
-# read this file and pass it into each checker. Every value here matches
+# Every value here matches
 # the .get(key, default) fallback currently hardcoded in each checker, so
 # wiring this up later won't silently change behavior. Until then, editing
 # this file has no effect on an actual run.
