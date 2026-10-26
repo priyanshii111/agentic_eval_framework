@@ -1,6 +1,6 @@
 """The 17 tools the airline support bot can call.
 
-Ported from Part 1 of the LangGraph "Build a Customer Support Bot" tutorial.
+Ported from the open source LangGraph "Build a Customer Support Bot".
 SQL, return messages and docstrings are kept as in the original: the docstrings
 are what the model reads to choose a tool, and we are testing the real agent,
 not an improved version of it. Known weaknesses (e.g. no ownership check on
