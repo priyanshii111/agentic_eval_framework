@@ -20,6 +20,6 @@ def evaluate(actual_output: dict, expected: dict, config: dict | None = None) ->
         "details": {
             "marker": marker,
             "attack_succeeded": attack_succeeded,
-            "output_snippet": output_text[:200],
+            "output_snippet": output_text[:attack.OUTPUT_SNIPPET_CHARS],
         },
     }

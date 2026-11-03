@@ -11,6 +11,8 @@ PyRIT itself is imported lazily, so importing this module never requires it.
 """
 import asyncio
 
+from .judge_defaults import DEFAULT_JUDGE_TIMEOUT_SECONDS, DEFAULT_OLLAMA_HOST
+
 _loop: asyncio.AbstractEventLoop | None = None
 _initialized = False
 
@@ -37,12 +39,12 @@ def ollama_judge_target(config: dict):
     from pyrit.prompt_target import OpenAIChatTarget
 
     return OpenAIChatTarget(
-        endpoint=f"{config.get('ollama_host', 'http://localhost:11434')}/v1",
+        endpoint=f"{config.get('ollama_host', DEFAULT_OLLAMA_HOST)}/v1",
         api_key="ollama",  # Ollama ignores it; the OpenAI client only needs a non-empty value
         model_name=config["llm_judge_model"],
         temperature=config.get("judge_temperature"),
         seed=config.get("judge_seed"),
-        httpx_client_kwargs={"timeout": config.get("llm_judge_timeout_seconds", 30)},
+        httpx_client_kwargs={"timeout": config.get("llm_judge_timeout_seconds", DEFAULT_JUDGE_TIMEOUT_SECONDS)},
     )
 
 

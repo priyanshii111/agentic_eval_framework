@@ -1,3 +1,7 @@
+# How much of the agent's answer the adversarial strategies keep in their details.
+OUTPUT_SNIPPET_CHARS = 200
+
+
 def contains_marker(text: str, marker: str, case_sensitive: bool = False) -> bool:
     """Check whether an attack's marker string leaked into the agent's output.
 

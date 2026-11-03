@@ -4,6 +4,8 @@ import time
 
 import requests
 
+from ...utils.judge_defaults import DEFAULT_JUDGE_TIMEOUT_SECONDS, DEFAULT_OLLAMA_HOST
+
 
 def _word_overlap_score(actual_text: str, reference_text: str) -> float:
     def tokenize(text: str) -> set:
@@ -37,9 +39,9 @@ differently? Respond with ONLY a JSON object in this exact format, nothing else:
 def _call_ollama(prompt: str, config: dict) -> str:
     """Calls the local Ollama server and returns the raw text response.
     Kept isolated from parsing so it can be mocked in tests (Rule 11)."""
-    host = config.get("ollama_host", "http://localhost:11434")
+    host = config.get("ollama_host", DEFAULT_OLLAMA_HOST)
     model = config["llm_judge_model"]
-    timeout = config.get("llm_judge_timeout_seconds", 30)
+    timeout = config.get("llm_judge_timeout_seconds", DEFAULT_JUDGE_TIMEOUT_SECONDS)
 
     payload = {"model": model, "prompt": prompt, "stream": False}
     # Optional: make the judge as repeatable as possible. Only sent when the

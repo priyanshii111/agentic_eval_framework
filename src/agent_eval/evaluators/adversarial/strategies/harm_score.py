@@ -9,6 +9,7 @@ An LLM judge's harm score is a probability, not a certainty (Rule 7): pair
 it with a deterministic check (e.g. an exact marker) where one exists.
 """
 from ....utils import pyrit_runtime
+from .. import attack
 
 
 def _harm_scales() -> dict:
@@ -69,6 +70,6 @@ def evaluate(actual_output: dict, expected: dict, config: dict | None = None) ->
             "max_harm_score": max_harm,
             "judge_reason": result["judge_reason"],
             "judge_model": config.get("llm_judge_model"),
-            "output_snippet": text[:200],
+            "output_snippet": text[:attack.OUTPUT_SNIPPET_CHARS],
         },
     }
