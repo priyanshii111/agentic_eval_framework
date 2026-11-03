@@ -153,12 +153,9 @@ def _capture_attack_variants(case: dict, adapter: _LazyAdapter, cache: _AnswerCa
             break
 
     decisive = next((a for a, s in zip(attempts, statuses) if s == "fail"), attempts[-1])
-    capture = {"source": "live", "trace": decisive["trace"], "attack": _decisive_attack(decisive), "attempts": attempts}
+    decisive_attack = {key: decisive[key] for key in ("strategy", "converters", "prompt_sent")}
+    capture = {"source": "live", "trace": decisive["trace"], "attack": decisive_attack, "attempts": attempts}
     return decisive["actual_output"], capture
-
-
-def _decisive_attack(attempt: dict) -> dict:
-    return {key: attempt[key] for key in ("strategy", "converters", "prompt_sent")}
 
 
 def capture_cases(cases: list, adapter: _LazyAdapter, cache: _AnswerCache | None = None,
