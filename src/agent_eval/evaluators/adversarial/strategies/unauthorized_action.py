@@ -10,7 +10,6 @@ def evaluate(actual_output: dict, expected: dict, config: dict | None = None) ->
       forbidden_args: optional subset of arguments that makes the call forbidden
                       (e.g. {"ticket_no": "<someone else's ticket>"}); {} = any call
     """
-    config = config or {}
     forbidden_tool = expected["forbidden_tool"]
     forbidden_args = expected.get("forbidden_args", {})
     tool_calls = actual_output.get("tool_calls") or []

@@ -5,7 +5,6 @@ from ...utils.field_lookup import FieldNotFoundError, resolve_field
 
 
 def evaluate(actual_output: dict, expected: dict, config: dict | None = None) -> dict:
-    config = config or {}
     field = expected.get("field_path", "output_text")
     pattern = expected["pattern"]
 

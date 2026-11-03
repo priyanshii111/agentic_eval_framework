@@ -253,7 +253,7 @@ agentic_eval_framework/
 │   │   ├── statistical/               #   scoring (similarity), aggregation (consistency), tone_scoring,
 │   │   │   └── likert_scales/         #   likert_scoring (quality) + its 1–5 scale YAMLs
 │   │   └── adversarial/
-│   │       ├── attack.py, scenarios.py, mutations.py
+│   │       ├── attack.py              #   marker check shared by the strategies
 │   │       └── strategies/            #   prompt_injection, instruction_conflict, jailbreak,
 │   │                                  #   unauthorized_action, harm_score
 │   ├── integrations/

@@ -1,5 +1,4 @@
 def evaluate(actual_output: dict, expected: dict, config: dict | None = None) -> dict:
-    config = config or {}
     tool_calls = actual_output.get("tool_calls") or []
     called_tools = {call.get("tool") for call in tool_calls}
 

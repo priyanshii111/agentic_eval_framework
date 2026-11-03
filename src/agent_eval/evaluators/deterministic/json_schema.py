@@ -40,7 +40,6 @@ def evaluate(actual_output: dict, expected: dict, config: dict | None = None) ->
             "details": {"reason": f"invalid expected_schema: {e.message}"},
         }
     validator = jsonschema.Draft202012Validator(schema, format_checker=jsonschema.FormatChecker())
-    #validator = jsonschema.Draft202012Validator(schema)         # validate output_json against schema
     errors = [
         {"path": ".".join(str(p) for p in err.path) or "(root)", "message": err.message}
         for err in validator.iter_errors(output_json)

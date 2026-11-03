@@ -14,9 +14,6 @@ from agent_eval.evaluators.statistical.statistical_evaluator import (
 from agent_eval.evaluators.adversarial.adversarial_evaluator import (
     evaluate_case as evaluate_adversarial,
 )
-# from agent_eval.evaluators.security.security_evaluator import (
-#     evaluate_case as evaluate_security,
-# )  # add once the security layer exists
 from agent_eval.runner import live
 
 # Live domains: a real agent is called and its answers are captured at runtime.
