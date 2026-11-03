@@ -15,6 +15,10 @@ _loop: asyncio.AbstractEventLoop | None = None
 _initialized = False
 
 
+def not_installed_message(error: ImportError) -> str:
+    return f"PyRIT is not installed ({error}); install with: pip install -e \".[pyrit]\""
+
+
 async def ensure_initialized_async() -> None:
     global _initialized
     if not _initialized:

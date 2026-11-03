@@ -15,7 +15,9 @@ from pathlib import Path
 
 import yaml
 
+from ..evaluators.case_runner import apply_layer_config
 from ..integrations.agent import AgentCallError, create_adapter
+from ..utils.pyrit_runtime import not_installed_message
 
 LAYER_ORDER = ("deterministic", "statistical", "adversarial")
 RUN_META_FILE = "run.json"
@@ -100,7 +102,7 @@ def _capture_attack(case_input: dict, adapter: _LazyAdapter, cache: _AnswerCache
         # Imported here: only attack cases need PyRIT; everything else runs without it.
         from ..integrations.pyrit_attacks import run_attack
     except ImportError as e:
-        raise AgentCallError(f"PyRIT is not installed ({e}); install with: pip install -e \".[pyrit]\"") from e
+        raise AgentCallError(not_installed_message(e)) from e
 
     result, first = cache.get_or_call(case_input, case_id, lambda inp: run_attack(adapter, inp))
     capture = {"source": "live", "trace": result["trace"], "attack": result["attack"]}
@@ -130,7 +132,7 @@ def _capture_attack_variants(case: dict, adapter: _LazyAdapter, cache: _AnswerCa
     try:
         from ..integrations.pyrit_attacks import attack_rounds, run_attack, variant_name
     except ImportError as e:
-        raise AgentCallError(f"PyRIT is not installed ({e}); install with: pip install -e \".[pyrit]\"") from e
+        raise AgentCallError(not_installed_message(e)) from e
 
     case_input = case["input"]
     attempts, statuses = [], []
@@ -233,7 +235,7 @@ def grade_cases(cases: list, evaluate_fn, global_config: dict) -> list:
             continue
 
         if global_config:
-            case = {**case, "config": {**global_config, **case.get("config", {})}}
+            case = apply_layer_config(case, global_config)
         if case.get("capture", {}).get("attempts"):
             results.append(_grade_attempts(case, evaluate_fn))
         else:
@@ -319,8 +321,7 @@ def _attack_plan(layer_config: dict, evaluate_fn) -> dict | None:
         return None
 
     def grade(case: dict, actual_output: dict) -> str:
-        config = {**layer_config, **case.get("config", {})}
-        return evaluate_fn({**case, "actual_output": actual_output, "config": config})["status"]
+        return evaluate_fn(apply_layer_config({**case, "actual_output": actual_output}, layer_config))["status"]
 
     return {"strategies": strategies, "converters": layer_config.get("attack_converters", []), "grade": grade}
 

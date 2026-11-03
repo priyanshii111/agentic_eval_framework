@@ -1,5 +1,4 @@
-import time
-
+from .. import case_runner
 from . import aggregation, likert_scoring, scoring, tone_scoring
 
 DISPATCH = {
@@ -55,40 +54,5 @@ REASON_BUILDERS = {
 }
 
 
-def _build_reason(eval_type: str, status: str, details: dict) -> str:
-    if status == "error":
-        return details.get("reason", f"{eval_type} checker encountered an error")
-    builder = REASON_BUILDERS.get(eval_type)
-    if builder is None:
-        return f"{eval_type} check {status}"
-    return builder(status, details)
-
-
 def evaluate_case(case: dict) -> dict:
-    case_id = case["id"]
-    eval_type = case["eval_type"]
-    severity = case.get("severity")
-
-    checker = DISPATCH.get(eval_type)
-    if checker is None:
-        status, details, duration_ms = "error", {"reason": f"unknown eval_type '{eval_type}'"}, 0.0
-    else:
-        input_data = case["actual_outputs"] if eval_type in MULTI_SAMPLE_EVAL_TYPES else case["actual_output"]
-
-        start = time.perf_counter()
-        try:
-            outcome = checker(input_data, case["expected"], case.get("config", {}))
-            status, details = outcome["status"], outcome["details"]
-        except Exception as e:
-            status, details = "error", {"reason": f"unhandled exception in {eval_type} checker: {e}"}
-        duration_ms = round((time.perf_counter() - start) * 1000, 2)
-
-    return {
-        "case_id": case_id,
-        "eval_type": eval_type,
-        "status": status,
-        "severity": severity,
-        "reason": _build_reason(eval_type, status, details),
-        "details": details,
-        "duration_ms": duration_ms,
-    }
+    return case_runner.evaluate_case(case, DISPATCH, REASON_BUILDERS, MULTI_SAMPLE_EVAL_TYPES)

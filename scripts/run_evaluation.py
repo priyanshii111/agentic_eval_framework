@@ -14,6 +14,7 @@ from agent_eval.evaluators.statistical.statistical_evaluator import (
 from agent_eval.evaluators.adversarial.adversarial_evaluator import (
     evaluate_case as evaluate_adversarial,
 )
+from agent_eval.evaluators.case_runner import apply_layer_config
 from agent_eval.runner import live
 
 # Live domains: a real agent is called and its answers are captured at runtime.
@@ -157,7 +158,7 @@ def run_layer(name: str, fixture_path: str, evaluate_fn, expected_status: dict, 
     print(f"\n=== {name} layer ({fixture_path}) ===")
     for case in cases:
         if global_config:
-            case = {**case, "config": {**global_config, **case.get("config", {})}}
+            case = apply_layer_config(case, global_config)
 
         result = evaluate_fn(case)
 

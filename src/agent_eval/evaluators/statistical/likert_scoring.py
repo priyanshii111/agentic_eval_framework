@@ -78,7 +78,7 @@ def evaluate(actual_output: dict, expected: dict, config: dict | None = None) ->
     except ImportError as e:
         return {
             "status": "error",
-            "details": {"reason": f"PyRIT is not installed ({e}); install with: pip install -e \".[pyrit]\""},
+            "details": {"reason": pyrit_runtime.not_installed_message(e)},
         }
     except Exception as e:
         return {"status": "error", "details": {"reason": f"quality scoring failed: {e!r}"}}
